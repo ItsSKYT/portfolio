@@ -38,7 +38,6 @@ export const site = {
     paragraphs: [
       "Cześć! Jestem SKYT, a tak naprawdę Sebastian. Jestem jeszcze juniorem, czyli ciągle się uczę, ale lubię robić rzeczy: od interfejsu, przez API i bazę, aż po trzymanie tego na produkcji.",
       "Najczęściej siedzę w React / Next.js i Node.js, ale to nie jedyne, co potrafię. Bazy danych, proxy, serwer, wdrożenie na serwer. Wszystko, czego potrzebujesz do działania aplikacji.",
-      "Poza kodem uwielbiam gry, oglądanie anime, spacery z moim owczarkiem niemieckim i wiele innych rzeczy.",
     ],
     stats: [
       { value: "1", label: "działający własny projekt" },
@@ -167,6 +166,16 @@ export const site = {
     ],
   },
 
+  /** Sekcja "Poza kodem": osobisty blok z żywym statusem Discord (Lanyard). Tylko fakty ze skyt.dev. */
+  personal: {
+    headingLines: ["Poza", "kodem."],
+    lead: "Poza kodem uwielbiam gry, oglądanie anime, spacery z moim owczarkiem niemieckim i wiele innych rzeczy.",
+    text: "Jestem jeszcze juniorem, więc ciągle się uczę. Najprościej złapać mnie na Discordzie. Obok widać na żywo, czy jestem dostępny i czego akurat słucham.",
+    interests: ["Gry", "Anime", "Spacery z owczarkiem niemieckim"],
+    discordCta: "Otwórz profil na Discordzie",
+    spotifyCta: "Spotify",
+  },
+
   contact: {
     /** Linie wielkiego nagłówka w sekcji kontakt */
     headingLines: ["Masz coś", "do zrobienia?", "Napisz."],
@@ -185,11 +194,29 @@ export const site = {
   },
 } as const;
 
-export const navLinks = [
+/**
+ * Numerowane sekcje strony, w kolejności wyświetlania. Jedno źródło prawdy:
+ * numer sekcji (01, 02...) i łączna liczba w etykietach oraz w nawigacji liczą się stąd.
+ */
+export const sections = [
   { id: "o-mnie", label: "O mnie" },
   { id: "co-robie", label: "Co robię" },
   { id: "projekty", label: "Projekty" },
   { id: "umiejetnosci", label: "Umiejętności" },
   { id: "doswiadczenie", label: "Doświadczenie" },
+  { id: "obecnie", label: "Obecnie" },
+  { id: "poza-kodem", label: "Poza kodem" },
   { id: "kontakt", label: "Kontakt" },
 ] as const;
+
+export type SectionId = (typeof sections)[number]["id"];
+
+/** Numer sekcji jako "01", "02"... */
+export function sectionNumber(id: SectionId) {
+  return String(sections.findIndex((s) => s.id === id) + 1).padStart(2, "0");
+}
+
+export const sectionTotal = String(sections.length).padStart(2, "0");
+
+/** Nawigacja = wszystkie numerowane sekcje (te same numery co w etykietach sekcji) */
+export const navLinks = sections;

@@ -62,7 +62,7 @@ export function Experience() {
   return (
     <section id="doswiadczenie" className="section-y relative">
       <div className="wrap">
-        <SectionLabel index="05" label="Doświadczenie" />
+        <SectionLabel id="doswiadczenie" />
         <h2 className={headingClass}>
           <Lines lines={["Moja droga"]} />
         </h2>

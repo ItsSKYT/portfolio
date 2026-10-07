@@ -12,7 +12,7 @@ export function Services() {
   return (
     <section id="co-robie" className="section-y relative">
       <div className="wrap">
-        <SectionLabel index="02" label="Co robię" />
+        <SectionLabel id="co-robie" />
 
         <div className="gap-head grid items-end gap-8 md:grid-cols-12 md:gap-8">
           <h2 className="t-h2 md:col-span-7">

@@ -193,7 +193,7 @@ export function Projects() {
   return (
     <section id="projekty" className="section-y relative">
       <div className="wrap">
-        <SectionLabel index="03" label="Projekty" />
+        <SectionLabel id="projekty" />
         <div className="flex items-end justify-between gap-6">
           <h2 className={headingClass}>
             <Lines lines={["Wybrane", "realizacje"]} />

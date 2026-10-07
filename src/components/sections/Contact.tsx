@@ -16,7 +16,7 @@ export function Contact() {
   return (
     <section ref={ref} id="kontakt" className="section-y relative overflow-hidden !pb-0">
       <div className="wrap">
-        <SectionLabel index="07" label="Kontakt" />
+        <SectionLabel id="kontakt" />
 
         <motion.div style={{ y }} className="gap-head">
           <h2 className="text-[15vw] font-semibold leading-[0.9] tracking-[-0.055em] lg:text-[10.5rem]">

@@ -57,7 +57,7 @@ export function Nav() {
             {site.name}
           </a>
 
-          <ul className="hidden items-center gap-7 lg:flex xl:gap-9">
+          <ul className="hidden items-center gap-6 xl:flex 2xl:gap-8">
             {navLinks.map((l, i) => (
               <li key={l.id}>
                 <a
@@ -67,14 +67,14 @@ export function Nav() {
                     active === l.id ? "text-white" : "text-white/60 hover:text-white"
                   }`}
                 >
-                  <span className="font-mono text-[10px] text-white/40">0{i + 1}</span>
+                  <span className="font-mono text-[10px] text-white/40">{String(i + 1).padStart(2, "0")}</span>
                   {l.label}
                 </a>
               </li>
             ))}
           </ul>
 
-          <a href={`mailto:${site.contact.email}`} className="link-draw hidden pb-1 text-[0.9375rem] lg:inline-block">
+          <a href={`mailto:${site.contact.email}`} className="link-draw hidden pb-1 text-[0.9375rem] xl:inline-block">
             Napisz ↗
           </a>
 
@@ -84,7 +84,7 @@ export function Nav() {
             aria-expanded={open}
             aria-controls="mobile-menu"
             aria-label={open ? "Zamknij menu" : "Otwórz menu"}
-            className="t-label relative z-[70] -m-2 p-2 lg:hidden"
+            className="t-label relative z-[70] -m-2 p-2 xl:hidden"
           >
             <span className="relative block h-[1.5em] overflow-hidden">
               <motion.span className="block" animate={{ y: open ? "-100%" : 0 }} transition={{ duration: 0.5, ease: EASE }}>
@@ -107,7 +107,7 @@ export function Nav() {
         {open && (
           <motion.div
             id="mobile-menu"
-            className="wrap fixed inset-0 z-[45] flex flex-col justify-between bg-black pb-10 pt-28 lg:hidden"
+            className="wrap fixed inset-0 z-[45] flex flex-col justify-between gap-10 overflow-y-auto bg-black pb-10 pt-24 xl:hidden"
             initial={{ clipPath: "inset(0 0 100% 0)" }}
             animate={{ clipPath: "inset(0 0 0% 0)" }}
             exit={{ clipPath: "inset(0 0 100% 0)" }}
@@ -119,14 +119,14 @@ export function Nav() {
                   <motion.a
                     href={`#${l.id}`}
                     onClick={() => setOpen(false)}
-                    className="flex items-baseline justify-between py-5 text-[2.5rem] font-medium leading-none tracking-[-0.04em]"
+                    className="flex items-baseline justify-between py-4 text-[2rem] font-medium leading-none tracking-[-0.04em] sm:text-[2.5rem]"
                     initial={{ y: "110%" }}
                     animate={{ y: 0 }}
                     exit={{ y: "110%" }}
-                    transition={{ duration: 0.8, ease: EASE_OUT, delay: 0.2 + i * 0.06 }}
+                    transition={{ duration: 0.8, ease: EASE_OUT, delay: 0.2 + i * 0.05 }}
                   >
                     {l.label}
-                    <span className="t-label text-white/40">0{i + 1}</span>
+                    <span className="t-label text-white/40">{String(i + 1).padStart(2, "0")}</span>
                   </motion.a>
                 </li>
               ))}

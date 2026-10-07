@@ -3,12 +3,12 @@
 import { motion } from "framer-motion";
 import { EASE_OUT } from "../fx/hooks";
 import { Rule } from "../fx/Reveal";
+import { sectionNumber, sectionTotal, sections, type SectionId } from "@/data/site";
 
-/** Liczba numerowanych sekcji na stronie (O mnie ... Kontakt) */
-export const SECTION_TOTAL = 7;
-
-/** Nagłówek sekcji w stylu editorial: (01)  Nazwa ........ 01 / 07 */
-export function SectionLabel({ index, label, dark = false }: { index: string; label: string; dark?: boolean }) {
+/** Nagłówek sekcji w stylu editorial: (01)  Nazwa ........ 01 / 08. Numer i nazwa z `sections` w site.ts. */
+export function SectionLabel({ id, dark = false }: { id: SectionId; dark?: boolean }) {
+  const index = sectionNumber(id);
+  const label = sections.find((s) => s.id === id)?.label ?? "";
   const muted = dark ? "text-black/45" : "text-white/45";
   const strong = dark ? "text-black" : "text-white";
   return (
@@ -31,7 +31,7 @@ export function SectionLabel({ index, label, dark = false }: { index: string; la
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.25 }}
         >
-          {index} / {String(SECTION_TOTAL).padStart(2, "0")}
+          {index} / {sectionTotal}
         </motion.span>
       </div>
       <Rule className={dark ? "bg-black/20" : "bg-white/20"} />

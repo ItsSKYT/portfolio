@@ -12,7 +12,7 @@ export function Now() {
   return (
     <section id="obecnie" className="section-y relative">
       <div className="wrap">
-        <SectionLabel index="06" label="Obecnie" />
+        <SectionLabel id="obecnie" />
 
         <div className="gap-head grid gap-12 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-5">

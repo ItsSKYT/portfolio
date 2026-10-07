@@ -45,7 +45,7 @@ export function Skills() {
     <section ref={ref} id="umiejetnosci" className="relative">
       <motion.div style={{ clipPath }} className="section-y bg-white text-black">
         <div className="wrap">
-          <SectionLabel index="04" label="Umiejętności" dark />
+          <SectionLabel id="umiejetnosci" dark />
           <h2 className={headingClass}>
             <Lines lines={["Narzędzia,", "których używam"]} />
           </h2>

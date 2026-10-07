@@ -8,8 +8,9 @@ Cała treść strony znajduje się w jednym pliku: `src/data/site.ts` (imię, op
 
 ## Struktura
 
-- `src/components/sections/*`: sekcje strony (Hero, O mnie, Co robię, Projekty, Umiejętności, Doświadczenie, Obecnie, Kontakt)
+- `src/components/sections/*`: sekcje strony (Hero, O mnie, Co robię, Projekty, Umiejętności, Doświadczenie, Obecnie, Poza kodem, Kontakt)
 - `src/components/fx/*`: efekty (intro/preloader, smooth scroll, pasek postępu, kursor, reveal, magnetic, licznik)
+- `src/components/discord/*`, `src/hooks/*`, `src/lib/*`: karta Discord z żywym statusem (Lanyard)
 - `src/data/site.ts`: treść
 - Styl: czarno-biały, Inter Tight + Geist Mono. Animacje respektują `prefers-reduced-motion`, cięższe efekty wyłączone na urządzeniach dotykowych.
 
@@ -22,12 +23,12 @@ npm run dev
 
 ## Build
 
-`next.config.ts` ma ustawione `output: "export"`, więc `npm run build` tworzy statyczną stronę w katalogu `out/`.
+Domyślnie `npm run build` tworzy build serwerowy (`next start`). Z `STATIC_EXPORT=1` powstaje statyczna strona w katalogu `out/`.
 
 Obrazek podglądu (OG) to statyczny `public/og.png` (1200x630). Zmienna `SITE_URL` ustawia absolutne linki w metadanych:
 
 ```bash
-npm run build
+SITE_URL=https://skyt.dev npm run build
 ```
 
 Po zmianie imienia, roli lub lokalizacji odśwież obrazek podglądu:

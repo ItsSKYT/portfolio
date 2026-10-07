@@ -19,7 +19,7 @@ export function About() {
   return (
     <section id="o-mnie" className="section-y relative">
       <div className="wrap">
-        <SectionLabel index="01" label="O mnie" />
+        <SectionLabel id="o-mnie" />
 
         <div className="gap-head grid gap-8 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-4 lg:col-span-3">
