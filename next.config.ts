@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
+/**
+ * Dwa tryby budowania:
+ *  - domyślnie: build serwerowy (dla `next start`, np. na VPS za reverse-proxy / tunelem)
+ *  - STATIC_EXPORT=1: statyczny eksport do `out/` (np. Cloudflare Pages / GitHub Pages)
+ */
+const staticExport = process.env.STATIC_EXPORT === "1";
+
 const nextConfig: NextConfig = {
-  /* Statyczny eksport → `npm run build` tworzy katalog `out/` (Cloudflare Pages). */
-  output: "export",
+  ...(staticExport ? { output: "export" as const } : {}),
   images: { unoptimized: true },
   turbopack: {
     rules: {

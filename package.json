@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "serve out -l 3000",
     "lint": "eslint",
-    "preview:pages": "wrangler pages dev out --port 8788",
-    "deploy": "npm run build && wrangler pages deploy out --project-name skyt-portfolio --branch main",
-    "og": "node --experimental-strip-types --no-warnings scripts/generate-og.mjs"
+    "preview:pages": "STATIC_EXPORT=1 npm run build && wrangler pages dev out --port 8788",
+    "deploy": "STATIC_EXPORT=1 npm run build && wrangler pages deploy out --project-name skyt-portfolio --branch main",
+    "og": "node --experimental-strip-types --no-warnings scripts/generate-og.mjs",
+    "build:static": "STATIC_EXPORT=1 next build"
   },
   "dependencies": {
     "framer-motion": "^14.0.0",
