@@ -1,4 +1,4 @@
-import { DISCORD_USER_ID } from "@/lib/discord-profile";
+import { DISCORD_USER_ID, isAnimatedHash } from "@/lib/discord-profile";
 
 export { DISCORD_USER_ID };
 
@@ -95,11 +95,13 @@ export function getAvatarUrl(userId: string, avatar: string | null, size = 128) 
     const index = Number(BigInt(userId) >> BigInt(22)) % 6;
     return `https://cdn.discordapp.com/embed/avatars/${index}.png`;
   }
-  return `https://cdn.discordapp.com/avatars/${userId}/${avatar}.png?size=${size}`;
+  const ext = isAnimatedHash(avatar) ? "gif" : "png";
+  return `https://cdn.discordapp.com/avatars/${userId}/${avatar}.${ext}?size=${size}`;
 }
 
+/** Dekoracja awatara: dla animowanych (a_) passthrough=true zwraca animowany APNG zamiast pierwszej klatki. */
 export function getDecorationUrl(asset: string) {
-  return `https://cdn.discordapp.com/avatar-decoration-presets/${asset}.png?size=160&passthrough=false`;
+  return `https://cdn.discordapp.com/avatar-decoration-presets/${asset}.png?size=160&passthrough=${isAnimatedHash(asset)}`;
 }
 
 /** Obrazek aktywności (np. okładka gry). Obsługuje "mp:external/..." i zwykłe asset ID aplikacji. */

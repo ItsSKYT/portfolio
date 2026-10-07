@@ -22,8 +22,15 @@ export type DiscordProfileData = {
   profileEffectSku: string | null;
 };
 
+/** Animowane zasoby Discorda mają hash z prefiksem "a_" (banner, avatar, dekoracja). */
+export function isAnimatedHash(hash: string | null | undefined) {
+  return Boolean(hash && hash.startsWith("a_"));
+}
+
+/** Banner: animowany jako .gif (statyczny .png/.webp zamraża go na pierwszej klatce). */
 export function getBannerUrl(userId: string, bannerHash: string, size = 600) {
-  return `https://cdn.discordapp.com/banners/${userId}/${bannerHash}.png?size=${size}`;
+  const ext = isAnimatedHash(bannerHash) ? "gif" : "png";
+  return `https://cdn.discordapp.com/banners/${userId}/${bannerHash}.${ext}?size=${size}`;
 }
 
 export function getBadgeIconUrl(iconHash: string) {

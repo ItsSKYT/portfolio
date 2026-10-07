@@ -7,7 +7,13 @@ import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
 import { useDiscordProfile } from "@/hooks/use-discord-profile";
 import { useLanyard } from "@/hooks/use-lanyard";
-import { DISCORD_USER_ID, getBadgeIconUrl, getBannerUrl, getNameplateStaticUrl } from "@/lib/discord-profile";
+import {
+  DISCORD_USER_ID,
+  getBadgeIconUrl,
+  getBannerUrl,
+  getNameplateStaticUrl,
+  getNameplateVideoUrl,
+} from "@/lib/discord-profile";
 import {
   STATUS_LABELS,
   activityLabel,
@@ -21,7 +27,7 @@ import {
   type DiscordStatus,
   type LanyardActivity,
 } from "@/lib/lanyard";
-import { DUR, EASE_OUT } from "../fx/hooks";
+import { DUR, EASE_OUT, useMediaQuery } from "../fx/hooks";
 import { DiscordBio } from "./DiscordBio";
 
 const PROFILE_URL = `https://discord.com/users/${DISCORD_USER_ID}`;
@@ -65,6 +71,34 @@ export function StatusMark({ status, size = 8, ring }: { status: DiscordStatus |
       style={s}
       aria-hidden
     />
+  );
+}
+
+/**
+ * Nameplate z Discorda: animacja to wideo .webm (static.png to tylko pierwsza klatka).
+ * Filtr grayscale na <video> nie zatrzymuje odtwarzania. Przy prefers-reduced-motion lub błędzie wideo: statyczny obrazek.
+ */
+function Nameplate({ asset, className }: { asset: string; className: string }) {
+  const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const [failed, setFailed] = useState(false);
+  if (reduced || failed) {
+    return (
+      <div aria-hidden className={`bg-cover bg-right ${className}`} style={{ backgroundImage: `url(${getNameplateStaticUrl(asset)})` }} />
+    );
+  }
+  return (
+    <video
+      aria-hidden
+      autoPlay
+      loop
+      muted
+      playsInline
+      poster={getNameplateStaticUrl(asset)}
+      onError={() => setFailed(true)}
+      className={`object-cover object-right ${className}`}
+    >
+      <source src={getNameplateVideoUrl(asset)} type="video/webm" onError={() => setFailed(true)} />
+    </video>
   );
 }
 
@@ -239,10 +273,9 @@ export function DiscordCard() {
         <div className="relative px-5 pb-6 sm:px-7">
           {/* nameplate: delikatne tło za nazwą */}
           {nameplate && (
-            <div
-              aria-hidden
-              className={`pointer-events-none absolute inset-x-0 bottom-0 top-10 bg-cover bg-right opacity-[0.18] ${MONO} [mask-image:linear-gradient(to_left,black,transparent_75%)]`}
-              style={{ backgroundImage: `url(${getNameplateStaticUrl(nameplate)})` }}
+            <Nameplate
+              asset={nameplate}
+              className={`pointer-events-none absolute inset-x-0 bottom-0 top-10 h-[calc(100%-2.5rem)] w-full opacity-[0.18] ${MONO} [mask-image:linear-gradient(to_left,black,transparent_75%)]`}
             />
           )}
 
