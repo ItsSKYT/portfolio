@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { site } from "@/data/site";
+import { EasterEgg } from "../easter-egg/EasterEgg";
 import { DUR, EASE_OUT } from "../fx/hooks";
 import { Magnetic } from "../fx/Magnetic";
 import { Lines, Reveal, Rule } from "../fx/Reveal";
@@ -100,8 +101,11 @@ export function Contact() {
       <footer className="wrap mt-24 sm:mt-32 lg:mt-40">
         <Rule className="bg-white/15" />
         <div className="t-label flex flex-col gap-3 py-8 text-white/45 sm:flex-row sm:items-center sm:justify-between sm:py-10">
-          <p>
-            © {site.footer.year} {site.name}
+          <p className="flex items-center gap-2">
+            <span>
+              © {site.footer.year} {site.name}
+            </span>
+            <EasterEgg />
           </p>
           <p>{site.footer.note}</p>
           <a href="#top" className="link-draw self-start pb-0.5 hover:text-white sm:self-auto">

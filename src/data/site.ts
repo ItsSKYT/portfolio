@@ -188,6 +188,17 @@ export const site = {
     ],
   },
 
+  /** Ukryta niespodzianka: serduszko w stopce (3 kliknięcia) */
+  easterEgg: {
+    heartLabel: "Serduszko",
+    question: "Czy nazywasz się Gabi?",
+    yes: "Tak",
+    no: "Nie",
+    message: "Kocham Cię",
+    note: "Dla Gabi",
+    close: "Zamknij",
+  },
+
   footer: {
     year: 2026,
     note: "Zbudowane przy pomocy Next.js z nudów.",
