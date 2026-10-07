@@ -53,11 +53,8 @@ export function Nav() {
           transition={{ duration: 0.6, ease: EASE_OUT }}
           className="wrap flex items-center justify-between"
         >
-          <a href="#top" className="flex items-baseline gap-1 text-lg font-semibold tracking-[-0.03em]">
+          <a href="#top" className="text-lg font-semibold tracking-[-0.03em]">
             {site.name}
-            <span className="font-mono text-[10px] font-normal tracking-normal text-white/60">
-              ©{String(site.footer.year).slice(2)}
-            </span>
           </a>
 
           <ul className="hidden items-center gap-7 lg:flex xl:gap-9">
