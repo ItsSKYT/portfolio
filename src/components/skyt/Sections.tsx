@@ -25,45 +25,47 @@ export function Hero({
   srLead?: string;
   tagline?: string;
   actions?: HeroAction[];
-  /** Live extras under the actions, e.g. the Discord presence pill. */
+  /** Right column on wide screens (below the actions on narrow ones), e.g. a live status panel. */
   aside?: ReactNode;
 }) {
   return (
     <section className="sk-hero" aria-label={name}>
       <DotField />
       <div className="sk-hero__inner">
-        <Reveal className="sk-hero__eyebrow" variant="fade" delay={80}>
-          <StatusBadge status="live">{role}</StatusBadge>
-        </Reveal>
-        <h1 className="sk-hero__name display-xl">
-          <SplitText text={name} stagger={80} delay={160} />
-        </h1>
-        <Reveal as="p" className="sk-hero__lead body-l" delay={620}>
-          {lead} <WordCycle words={words} srText={srLead} />
-        </Reveal>
-        {tagline && (
-          <Reveal as="p" className="sk-hero__tagline body" delay={700}>
-            {tagline}
+        <div className="sk-hero__main">
+          <Reveal className="sk-hero__eyebrow" variant="fade" delay={80}>
+            <StatusBadge status="live">{role}</StatusBadge>
           </Reveal>
-        )}
-        {actions.length > 0 && (
-          <Reveal className="sk-hero__actions" delay={780}>
-            {actions.map((a, i) => (
-              <Button
-                key={a.label}
-                href={a.href}
-                variant={i === 0 ? "primary" : "ghost"}
-                size="lg"
-                target={a.external ? "_blank" : undefined}
-                rel={a.external ? "noopener noreferrer" : undefined}
-              >
-                {a.label}
-              </Button>
-            ))}
+          <h1 className="sk-hero__name display-xl">
+            <SplitText text={name} stagger={80} delay={160} />
+          </h1>
+          <Reveal as="p" className="sk-hero__lead body-l" delay={620}>
+            {lead} <WordCycle words={words} srText={srLead} />
           </Reveal>
-        )}
+          {tagline && (
+            <Reveal as="p" className="sk-hero__tagline body" delay={700}>
+              {tagline}
+            </Reveal>
+          )}
+          {actions.length > 0 && (
+            <Reveal className="sk-hero__actions" delay={780}>
+              {actions.map((a, i) => (
+                <Button
+                  key={a.label}
+                  href={a.href}
+                  variant={i === 0 ? "primary" : "ghost"}
+                  size="lg"
+                  target={a.external ? "_blank" : undefined}
+                  rel={a.external ? "noopener noreferrer" : undefined}
+                >
+                  {a.label}
+                </Button>
+              ))}
+            </Reveal>
+          )}
+        </div>
         {aside && (
-          <Reveal className="sk-hero__aside" variant="fade" delay={1000}>
+          <Reveal className="sk-hero__aside" variant="blur" delay={900}>
             {aside}
           </Reveal>
         )}

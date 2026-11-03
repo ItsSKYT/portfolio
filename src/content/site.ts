@@ -10,6 +10,8 @@ export const site = {
   description: "SKYT, Junior Full Stack Developer. Robię strony i apki od frontu po backend. Twórca anime.surf.",
   email: "hello@skyt.dev",
   discordId: "490026522560823296",
+  github: "ItsSKYT",
+  availability: "Szukam ciekawych projektów",
 
   links: {
     github: "https://github.com/ItsSKYT",

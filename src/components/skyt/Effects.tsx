@@ -3,6 +3,13 @@
 import Lenis from "lenis";
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "@/lib/motion";
+import { copyText, setSmoothScroller, useWarsawTime } from "@/lib/ui";
+
+/** "Polska 14:32" for the footer; blank until mounted so the server HTML never shows a wrong time. */
+export function LocalTime() {
+  const time = useWarsawTime();
+  return <span className="foot-time">Polska {time?.text ?? "--:--"}</span>;
+}
 
 const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -118,6 +125,7 @@ export function SmoothScroll() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.matchMedia("(pointer: coarse)").matches) return;
     const lenis = new Lenis({ autoRaf: true, lerp: 0.085, anchors: { offset: -80 } });
+    setSmoothScroller(lenis);
     const html = document.documentElement;
     const sync = () => (html.classList.contains("is-intro") ? lenis.stop() : lenis.start());
     sync();
@@ -126,6 +134,7 @@ export function SmoothScroll() {
     return () => {
       mo.disconnect();
       lenis.destroy();
+      setSmoothScroller(null);
     };
   }, []);
   return null;
@@ -163,14 +172,10 @@ export function CopyEmail({ email }: { email: string }) {
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   async function copy() {
-    try {
-      await navigator.clipboard.writeText(email);
-      setCopied(true);
-      window.clearTimeout(timer.current);
-      timer.current = window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      window.location.href = `mailto:${email}`;
-    }
+    if (!(await copyText(email))) return;
+    setCopied(true);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setCopied(false), 2000);
   }
 
   return (

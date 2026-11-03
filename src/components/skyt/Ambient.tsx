@@ -20,7 +20,7 @@ export function DotField({ gap = 24, radius = 160, className }: { gap?: number; 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const mouse = { x: -9999, y: -9999 };
     const cur = { x: -9999, y: -9999 };
-    const colors = { dot: "#5f6987", hot: "#ff6b35" };
+    const colors = { dot: "#5f6987", hot: "#a3b3ff" };
     const t0 = performance.now();
     let w = 0;
     let h = 0;
@@ -30,7 +30,7 @@ export function DotField({ gap = 24, radius = 160, className }: { gap?: number; 
     const readColors = () => {
       const cs = getComputedStyle(canvas);
       colors.dot = cs.getPropertyValue("--line-strong").trim() || colors.dot;
-      colors.hot = cs.getPropertyValue("--signal").trim() || colors.hot;
+      colors.hot = cs.getPropertyValue("--signal-ink").trim() || colors.hot;
     };
 
     const draw = (now: number) => {

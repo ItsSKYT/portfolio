@@ -19,8 +19,16 @@ body {
   color: var(--on-signal);
 }
 
+/* A whisper of film grain over everything, so the flat night ground has texture. */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 70; pointer-events: none; opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-theme="light"] body::after { opacity: 0.06; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .sk-hero::before, .sk-hero::after { animation: none; }
 }
 
 .skip-link {
@@ -61,7 +69,7 @@ body {
 .side__block { display: grid; gap: var(--space-4); justify-items: start; }
 .side__block p { margin: 0; color: var(--ink-muted); max-width: 40ch; }
 .side__label { margin: 0; color: var(--ink-muted); text-transform: uppercase; }
-.side__label b { color: var(--signal); font-weight: inherit; }
+.side__label b { color: var(--signal-ink); font-weight: inherit; }
 
 .contact__mail { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--line); }
 

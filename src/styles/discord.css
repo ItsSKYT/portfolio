@@ -110,7 +110,7 @@
 .dc-spotify { border-radius: var(--radius-md); }
 .dc-spotify__label { display: inline-flex; align-items: center; gap: 6px; }
 .dc-spotify__label svg { color: var(--live); }
-.dc-spotify:hover .dc-spotify__song { color: var(--signal); }
+.dc-spotify:hover .dc-spotify__song { color: var(--signal-ink); }
 .dc-spotify:hover .dc-art img { transform: scale(1.08); }
 .dc-spotify:focus-visible { outline: 2px solid var(--sky); outline-offset: 4px; }
 .dc-progress {

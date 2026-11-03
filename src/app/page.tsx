@@ -1,15 +1,20 @@
-import { DiscordCard, PresencePill } from "@/components/discord/DiscordCard";
+import { DiscordCard } from "@/components/discord/DiscordCard";
 import { DiscordProvider } from "@/components/discord/DiscordProvider";
+import { HeroPanel } from "@/components/discord/HeroPanel";
+import { GitHubActivity } from "@/components/github/GitHubActivity";
 import {
   Button,
+  CommandPalette,
   ContactCTA,
   CopyEmail,
   Counter,
   CursorFollower,
   EasterEgg,
   Hero,
+  LocalTime,
   Marquee,
   NavBar,
+  PaletteButton,
   ProjectCard,
   Reveal,
   SectionHeader,
@@ -18,6 +23,7 @@ import {
   TextLink,
   ThemeToggle,
   Timeline,
+  Toaster,
 } from "@/components/skyt";
 import {
   about,
@@ -31,10 +37,18 @@ import {
   personal,
   projects,
   sectionNumber,
+  sections,
   services,
   site,
   skills,
 } from "@/content/site";
+
+const socialLinks = [
+  { label: "GitHub", href: site.links.github },
+  { label: "Discord", href: site.links.discord },
+  { label: "Spotify", href: site.links.spotify },
+  { label: "anime.surf", href: projects.lead.href },
+];
 
 export default function Home() {
   return (
@@ -43,10 +57,13 @@ export default function Home() {
         Przejdź do treści
       </a>
       <CursorFollower />
+      <CommandPalette sections={sections} email={site.email} links={socialLinks} />
+      <Toaster />
 
       <header className="site-nav">
         <NavBar items={nav} brand={site.name} spy>
           <ThemeToggle />
+          <PaletteButton />
           <Button size="sm" href="#kontakt">
             Napisz
           </Button>
@@ -65,7 +82,13 @@ export default function Home() {
             { label: "Zobacz projekty", href: "#projekty" },
             { label: "Napisz do mnie", href: "#kontakt" },
           ]}
-          aside={<PresencePill href="#poza-kodem" />}
+          aside={
+            <HeroPanel
+              project={{ name: projects.lead.title, href: projects.lead.href }}
+              availability={site.availability}
+              discordHref={site.links.discord}
+            />
+          }
         />
 
         <div className="marquee-band">
@@ -121,6 +144,7 @@ export default function Home() {
                 </Reveal>
               ))}
             </div>
+            <GitHubActivity user={site.github} />
           </div>
         </section>
 
@@ -235,6 +259,7 @@ export default function Home() {
           <EasterEgg copy={easterEgg} />
         </span>
         <span>{site.footer.note}</span>
+        <LocalTime />
         <TextLink href="#top">Do góry ↑</TextLink>
       </footer>
     </DiscordProvider>

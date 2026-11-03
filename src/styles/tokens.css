@@ -11,15 +11,16 @@
   --ink: #eef0f6;
   --ink-muted: #9aa2b8;
   --ink-faint: #7a8299;
-  --signal: #ff6b35;
-  --signal-soft: #2a160e;
-  --on-signal: #0b0705;
+  --signal: oklch(51.1% 0.262 276.966);
+  --signal-ink: oklch(78.5% 0.115 274.713);
+  --signal-soft: oklch(25.7% 0.09 281.288);
+  --on-signal: #ffffff;
   --sky: #7cc4ff;
   --sky-soft: #0f2234;
   --on-sky: #04121f;
   --live: #5fd4a0;
   --lift: 0 1px 0 0 #ffffff0f inset, 0 24px 48px -24px #000000b3;
-  --glow: 0 0 0 1px #ff6b3559, 0 16px 48px -12px #ff6b3573;
+  --glow: 0 0 0 1px oklch(51.1% 0.262 276.966 / 0.45), 0 16px 48px -12px oklch(51.1% 0.262 276.966 / 0.55);
 }
 
 [data-theme="light"] {
@@ -32,15 +33,16 @@
   --ink: #11131a;
   --ink-muted: #4f5566;
   --ink-faint: #5f6471;
-  --signal: #c2410c;
-  --signal-soft: #fbd9c6;
+  --signal: oklch(51.1% 0.262 276.966);
+  --signal-ink: oklch(45.7% 0.24 277.023);
+  --signal-soft: oklch(93% 0.034 272.788);
   --on-signal: #ffffff;
   --sky: #0b5cad;
   --sky-soft: #d3e6fa;
   --on-sky: #ffffff;
   --live: #0f7a4f;
   --lift: 0 1px 0 0 #ffffffcc inset, 0 24px 48px -28px #3b2f1a40;
-  --glow: 0 0 0 1px #c2410c40, 0 16px 40px -16px #c2410c59;
+  --glow: 0 0 0 1px oklch(51.1% 0.262 276.966 / 0.3), 0 16px 40px -16px oklch(51.1% 0.262 276.966 / 0.45);
 }
 
 :root {

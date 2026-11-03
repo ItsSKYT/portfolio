@@ -7,6 +7,7 @@ import "@/styles/tokens.css";
 import "@/styles/skyt.css";
 import "@/styles/discord.css";
 import "@/styles/fx.css";
+import "@/styles/features.css";
 import "./globals.css";
 
 const title = `${site.name} | ${site.role}`;

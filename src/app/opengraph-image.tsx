@@ -10,7 +10,7 @@ export const contentType = "image/png";
 export const dynamic = "force-static";
 
 // Colours are the Night theme tokens from design/tokens.json.
-const C = { bg: "#07080c", ink: "#eef0f6", muted: "#9aa2b8", line: "#232838", signal: "#ff6b35" };
+const C = { bg: "#07080c", ink: "#eef0f6", muted: "#9aa2b8", line: "#232838", signal: "#4f39f6" };
 
 export default async function Image() {
   const [display, mono] = await Promise.all([

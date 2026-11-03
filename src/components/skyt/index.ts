@@ -10,5 +10,6 @@ export { ContactCTA } from "./ContactCTA";
 export { DotField, CursorFollower } from "./Ambient";
 export { ThemeToggle } from "./ThemeToggle";
 export { Hero, ServiceList } from "./Sections";
-export { Counter, Intro, SmoothScroll, ScrollProgress, CopyEmail } from "./Effects";
+export { Counter, Intro, SmoothScroll, ScrollProgress, CopyEmail, LocalTime } from "./Effects";
+export { CommandPalette, PaletteButton, Toaster } from "./CommandPalette";
 export { EasterEgg } from "./EasterEgg";
