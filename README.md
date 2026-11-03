@@ -1,18 +1,6 @@
-# Portfolio SKYT
+# skyt.dev
 
-Osobiste portfolio zbudowane w Next.js (App Router) i Tailwind CSS. Monochromatyczny, minimalistyczny design z animacjami (framer-motion + lenis).
-
-## Treść
-
-Cała treść strony znajduje się w jednym pliku: `src/data/site.ts` (imię, opis, umiejętności, projekty, doświadczenie, kontakt).
-
-## Struktura
-
-- `src/components/sections/*`: sekcje strony (Hero, O mnie, Co robię, Projekty, Umiejętności, Doświadczenie, Obecnie, Poza kodem, Kontakt)
-- `src/components/fx/*`: efekty (intro/preloader, smooth scroll, pasek postępu, kursor, reveal, magnetic, licznik)
-- `src/components/discord/*`, `src/hooks/*`, `src/lib/*`: karta Discord z żywym statusem (Lanyard)
-- `src/data/site.ts`: treść
-- Styl: czarno-biały, Inter Tight + Geist Mono. Animacje respektują `prefers-reduced-motion`, cięższe efekty wyłączone na urządzeniach dotykowych.
+Portfolio SKYT na systemie projektowym skyt.dev: motywy Noc/Dzień, tokeny ruchu i animowane komponenty React (Next.js 16, App Router).
 
 ## Rozwój
 
@@ -21,26 +9,32 @@ npm install
 npm run dev
 ```
 
-## Build
+## Gdzie co jest
 
-Domyślnie `npm run build` tworzy build serwerowy (`next start`). Z `STATIC_EXPORT=1` powstaje statyczna strona w katalogu `out/`.
+| Ścieżka | Co |
+| --- | --- |
+| `src/content/site.ts` | Cała treść i linki (sekcje, statystyki, projekty, mail, ID Discorda, serduszko). |
+| `design/tokens.json` | Tokeny (kolory per motyw, typografia, odstępy, promienie, cienie, czasy, krzywe). |
+| `src/styles/tokens.css` | Generowany z `tokens.json`: `npm run tokens`. Nie edytuj ręcznie. |
+| `src/styles/*.css` | Style komponentów (`skyt.css`), karty Discord (`discord.css`), efektów (`fx.css`). |
+| `src/components/skyt/` | Komponenty: Hero, NavBar, ProjectCard, Timeline, ContactCTA, DotField, kursor, intro, Lenis, liczniki, serduszko… |
+| `src/components/discord/` | Status Discord na żywo (Lanyard: websocket + REST) i profil (dcdn.dstn.to). |
+| `src/app/` | Layout (fonty `next/font`, metadane, motyw i intro przed pierwszym renderem), strona, 404, obrazek OG. |
 
-Obrazek podglądu (OG) to statyczny `public/og.png` (1200x630). Zmienna `SITE_URL` ustawia absolutne linki w metadanych:
+## Build i deploy
 
-```bash
-SITE_URL=https://skyt.dev npm run build
-```
-
-Po zmianie imienia, roli lub lokalizacji odśwież obrazek podglądu:
-
-```bash
-npm run og
-```
-
-## Deploy (Cloudflare Pages)
+Strona jest w pełni statyczna (dane z Discorda ładują się w przeglądarce), więc `npm run build` robi eksport do `out/`.
 
 ```bash
-npm run deploy
+npm run build          # statyczny eksport do out/
+npm start              # podgląd out/ na :3000
+npm run deploy         # Cloudflare Pages (projekt skyt-portfolio)
 ```
 
-Przy budowaniu z repozytorium w panelu Cloudflare Pages: build command `npm run build`, output `out`, zmienna `NODE_VERSION=22`.
+`SITE_URL` ustawia absolutne linki w metadanych (domyślnie `https://skyt.dev`). `STATIC_EXPORT=0` daje build serwerowy.
+Obrazek podglądu linku (`/opengraph-image`) generuje się przy buildzie z fontów w `assets/fonts/`.
+
+## Ruch
+
+Wejścia odpalają się raz, gdy blok wjeżdża w widok; reakcje na hover są natychmiastowe. Intro gra raz na sesję karty.
+Wszystko respektuje `prefers-reduced-motion`, a treść jest widoczna także bez JavaScriptu.

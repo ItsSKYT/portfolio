@@ -1,23 +1,14 @@
 import type { NextConfig } from "next";
 
 /**
- * Dwa tryby budowania:
- *  - domyślnie: build serwerowy (dla `next start`, np. na VPS za reverse-proxy / tunelem)
- *  - STATIC_EXPORT=1: statyczny eksport do `out/` (np. Cloudflare Pages / GitHub Pages)
+ * The site is fully static (live Discord data loads in the browser), so the build is a static
+ * export to out/ for Cloudflare Pages. Set STATIC_EXPORT=0 for a server build (`next start`).
  */
-const staticExport = process.env.STATIC_EXPORT === "1";
+const staticExport = process.env.STATIC_EXPORT !== "0";
 
 const nextConfig: NextConfig = {
   ...(staticExport ? { output: "export" as const } : {}),
   images: { unoptimized: true },
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
 };
 
 export default nextConfig;
