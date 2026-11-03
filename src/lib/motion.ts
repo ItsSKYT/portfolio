@@ -20,6 +20,41 @@ export function useReducedMotion(): boolean {
   return useSyncExternalStore(reducedMotion.subscribe, reducedMotion.get, () => false);
 }
 
+/**
+ * Eases a 2D value toward a target once per frame and stops when it settles.
+ * Used for pointer-driven motion instead of CSS transitions, which restart on every pointermove and stutter.
+ */
+export function createFollower(apply: (x: number, y: number) => void, ease = 0.18) {
+  let tx = 0;
+  let ty = 0;
+  let x = 0;
+  let y = 0;
+  let raf = 0;
+  const step = () => {
+    x += (tx - x) * ease;
+    y += (ty - y) * ease;
+    if (Math.abs(tx - x) < 0.01 && Math.abs(ty - y) < 0.01) {
+      x = tx;
+      y = ty;
+      raf = 0;
+    } else {
+      raf = requestAnimationFrame(step);
+    }
+    apply(x, y);
+  };
+  return {
+    set(nx: number, ny: number) {
+      tx = nx;
+      ty = ny;
+      if (!raf) raf = requestAnimationFrame(step);
+    },
+    stop() {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    },
+  };
+}
+
 /** Flips to true when any part of the element is 8% inside the viewport (once, unless once=false). */
 export function useInView<T extends Element>(ref: RefObject<T | null>, once = true): boolean {
   const [inView, setInView] = useState(false);

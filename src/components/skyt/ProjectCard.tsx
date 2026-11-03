@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
 import { cx, vars } from "@/lib/cx";
-import { useReducedMotion } from "@/lib/motion";
+import { createFollower, useReducedMotion } from "@/lib/motion";
 import { Arrow } from "./Arrow";
 import { StatusBadge, Tag, type Status } from "./Primitives";
 
@@ -38,7 +38,25 @@ export function ProjectCard({
   className?: string;
 }) {
   const ref = useRef<HTMLElement>(null);
+  const tiltFollower = useRef<ReturnType<typeof createFollower> | null>(null);
+  const spot = useRef({ x: 50, y: 50, raf: 0 });
   const reduced = useReducedMotion();
+
+  useEffect(
+    () => () => {
+      tiltFollower.current?.stop();
+      cancelAnimationFrame(spot.current.raf);
+    },
+    [],
+  );
+
+  function setTilt(rx: number, ry: number) {
+    tiltFollower.current ??= createFollower((x, y) => {
+      ref.current?.style.setProperty("--rx", `${x.toFixed(2)}deg`);
+      ref.current?.style.setProperty("--ry", `${y.toFixed(2)}deg`);
+    }, 0.12);
+    tiltFollower.current.set(rx, ry);
+  }
 
   function onPointerMove(e: PointerEvent<HTMLElement>) {
     const el = ref.current;
@@ -46,17 +64,21 @@ export function ProjectCard({
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width;
     const py = (e.clientY - r.top) / r.height;
-    el.style.setProperty("--px", `${(px * 100).toFixed(2)}%`);
-    el.style.setProperty("--py", `${(py * 100).toFixed(2)}%`);
-    if (tilt && !reduced) {
-      el.style.setProperty("--rx", `${((0.5 - py) * 6).toFixed(2)}deg`);
-      el.style.setProperty("--ry", `${((px - 0.5) * 8).toFixed(2)}deg`);
+    // Spotlight: at most one style write per frame, however fast the pointer events come.
+    spot.current.x = px * 100;
+    spot.current.y = py * 100;
+    if (!spot.current.raf) {
+      spot.current.raf = requestAnimationFrame(() => {
+        spot.current.raf = 0;
+        el.style.setProperty("--px", `${spot.current.x.toFixed(1)}%`);
+        el.style.setProperty("--py", `${spot.current.y.toFixed(1)}%`);
+      });
     }
+    if (tilt && !reduced) setTilt((0.5 - py) * 6, (px - 0.5) * 8);
   }
 
   function onPointerLeave() {
-    ref.current?.style.setProperty("--rx", "0deg");
-    ref.current?.style.setProperty("--ry", "0deg");
+    if (tiltFollower.current) setTilt(0, 0);
   }
 
   return (

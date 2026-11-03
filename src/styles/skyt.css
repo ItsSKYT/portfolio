@@ -42,11 +42,13 @@
   border: 1px solid transparent; border-radius: var(--radius-pill);
   font: 500 15px/1 var(--font-body); letter-spacing: -0.005em; text-decoration: none; white-space: nowrap;
   cursor: pointer; -webkit-tap-highlight-color: transparent;
+  /* The magnetic pull is eased per frame in JS (Button.tsx); only the press scale transitions here. */
   transform: translate3d(var(--mx), var(--my), 0);
-  transition: transform var(--sk-dur) var(--sk-spring), background-color var(--sk-dur-fast) ease,
+  scale: 1;
+  transition: scale var(--sk-dur-fast) var(--sk-spring), background-color var(--sk-dur-fast) ease,
     border-color var(--sk-dur-fast) ease, color var(--sk-dur-fast) ease, box-shadow var(--sk-dur) var(--sk-ease);
 }
-.sk-btn:active:not(:disabled) { transform: translate3d(var(--mx), var(--my), 0) scale(0.97); }
+.sk-btn:active:not(:disabled) { scale: 0.97; }
 .sk-btn--sm { height: 36px; padding: 0 var(--space-4); gap: var(--space-2); font-size: 14px; }
 .sk-btn--lg { height: 60px; padding: 0 var(--space-8); font-size: 17px; }
 
@@ -233,10 +235,11 @@
   position: relative; isolation: isolate; display: flex; flex-direction: column; gap: var(--space-4);
   padding: var(--space-8); border: 1px solid var(--line); border-radius: var(--radius-lg);
   background: var(--surface-raised); box-shadow: var(--lift); color: var(--ink);
+  /* Tilt is eased per frame in JS (ProjectCard.tsx), so no transform transition to restart on every pointermove. */
   transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform var(--sk-dur-slow) var(--sk-ease), border-color var(--sk-dur) ease, box-shadow var(--sk-dur) var(--sk-ease);
+  transition: border-color var(--sk-dur) ease, box-shadow var(--sk-dur) var(--sk-ease);
 }
-.sk-card:hover { transition-duration: 160ms, var(--sk-dur), var(--sk-dur); border-color: var(--line-strong); }
+.sk-card:hover { border-color: var(--line-strong); }
 .sk-card--link:hover { box-shadow: var(--lift), var(--glow); }
 .sk-card::before {
   content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
@@ -368,7 +371,7 @@
   padding: var(--space-32) var(--space-8) var(--space-16);
 }
 /* Two slow lights: the accent glow low-left, a cooler one high-right. */
-.sk-hero::before, .sk-hero::after { content: ""; position: absolute; z-index: -2; pointer-events: none; border-radius: 50%; }
+.sk-hero::before, .sk-hero::after { content: ""; position: absolute; z-index: -2; pointer-events: none; border-radius: 50%; will-change: transform; }
 .sk-hero::before {
   left: -12%; bottom: -35%; width: 75%; height: 90%;
   background: radial-gradient(closest-side, var(--signal-soft), rgba(0, 0, 0, 0));

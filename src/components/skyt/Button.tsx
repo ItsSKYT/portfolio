@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type PointerEvent, type ReactNode, type Ref } from "react";
+import { useEffect, useRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type PointerEvent, type ReactNode, type Ref } from "react";
 import { cx } from "@/lib/cx";
-import { useReducedMotion } from "@/lib/motion";
+import { createFollower, useReducedMotion } from "@/lib/motion";
 import { Arrow } from "./Arrow";
 import { RollText } from "./RollText";
 
@@ -25,24 +25,35 @@ export type ButtonProps = LinkProps | NativeButtonProps;
 export function Button(props: ButtonProps) {
   const { variant = "primary", size = "md", icon = "arrow", magnetic = true, className, children, ...rest } = props;
   const ref = useRef<HTMLElement | null>(null);
+  const follower = useRef<ReturnType<typeof createFollower> | null>(null);
+  const offset = useRef({ x: 0, y: 0 });
   const reduced = useReducedMotion();
 
-  function setOffset(x: number, y: number) {
-    ref.current?.style.setProperty("--mx", `${x.toFixed(2)}px`);
-    ref.current?.style.setProperty("--my", `${y.toFixed(2)}px`);
+  useEffect(() => () => follower.current?.stop(), []);
+
+  function pull(x: number, y: number) {
+    follower.current ??= createFollower((fx, fy) => {
+      offset.current = { x: fx, y: fy };
+      ref.current?.style.setProperty("--mx", `${fx.toFixed(2)}px`);
+      ref.current?.style.setProperty("--my", `${fy.toFixed(2)}px`);
+    }, 0.2);
+    follower.current.set(x, y);
   }
 
   function onPointerMove(e: PointerEvent<HTMLElement>) {
     const el = ref.current;
     if (!el || !magnetic || reduced || (el instanceof HTMLButtonElement && el.disabled)) return;
+    // Measure the resting box (minus the current pull) so the button does not chase itself.
     const r = el.getBoundingClientRect();
-    setOffset(((e.clientX - r.left - r.width / 2) / (r.width / 2)) * 6, ((e.clientY - r.top - r.height / 2) / (r.height / 2)) * 5);
+    const cx0 = r.left - offset.current.x + r.width / 2;
+    const cy0 = r.top - offset.current.y + r.height / 2;
+    pull(((e.clientX - cx0) / (r.width / 2)) * 6, ((e.clientY - cy0) / (r.height / 2)) * 5);
   }
 
   const shared = {
     className: cx("sk-btn", `sk-btn--${variant}`, `sk-btn--${size}`, "sk-roll-host", className),
     onPointerMove,
-    onPointerLeave: () => setOffset(0, 0),
+    onPointerLeave: () => pull(0, 0),
   };
 
   const content = (

@@ -17,7 +17,7 @@ export function DotField({ gap = 24, radius = 160, className }: { gap?: number; 
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const mouse = { x: -9999, y: -9999 };
     const cur = { x: -9999, y: -9999 };
     const colors = { dot: "#5f6987", hot: "#a3b3ff" };
@@ -143,12 +143,19 @@ export function CursorFollower({ ease = 0.2 }: { ease?: number }) {
     const pos = { x: -100, y: -100 };
     let first = true;
     let raf = 0;
+    let lastTarget: EventTarget | null = null;
 
+    // Runs only while the dot is catching up, then sleeps until the pointer moves again.
     const tick = () => {
       pos.x += (target.x - pos.x) * ease;
       pos.y += (target.y - pos.y) * ease;
+      const settled = Math.abs(target.x - pos.x) < 0.1 && Math.abs(target.y - pos.y) < 0.1;
+      if (settled) {
+        pos.x = target.x;
+        pos.y = target.y;
+      }
       el.style.transform = `translate3d(${pos.x.toFixed(1)}px, ${pos.y.toFixed(1)}px, 0)`;
-      raf = requestAnimationFrame(tick);
+      raf = settled ? 0 : requestAnimationFrame(tick);
     };
     const onMove = (e: PointerEvent) => {
       target.x = e.clientX;
@@ -157,15 +164,22 @@ export function CursorFollower({ ease = 0.2 }: { ease?: number }) {
         pos.x = target.x;
         pos.y = target.y;
         first = false;
+        el.classList.add("is-visible");
       }
-      el.classList.add("is-visible");
+      if (!raf) raf = requestAnimationFrame(tick);
+      // Touch the DOM only when the element under the pointer changes.
+      if (e.target === lastTarget) return;
+      lastTarget = e.target;
       const hit = (e.target as Element | null)?.closest?.("[data-cursor], a, button, [role='button'], input, textarea, select, label");
       const text = hit?.getAttribute("data-cursor") ?? "";
       el.classList.toggle("is-hover", !!hit && !text);
       el.classList.toggle("is-label", !!text);
-      label.textContent = text;
+      if (label.textContent !== text) label.textContent = text;
     };
-    const onLeave = () => el.classList.remove("is-visible");
+    const onLeave = () => {
+      el.classList.remove("is-visible");
+      first = true;
+    };
     const onDown = () => el.classList.add("is-down");
     const onUp = () => el.classList.remove("is-down");
 
@@ -173,7 +187,6 @@ export function CursorFollower({ ease = 0.2 }: { ease?: number }) {
     document.documentElement.addEventListener("pointerleave", onLeave);
     window.addEventListener("pointerdown", onDown);
     window.addEventListener("pointerup", onUp);
-    raf = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
