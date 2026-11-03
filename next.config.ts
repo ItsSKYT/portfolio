@@ -1,10 +1,12 @@
 import type { NextConfig } from "next";
 
 /**
- * The site is fully static (live Discord data loads in the browser), so the build is a static
- * export to out/ for Cloudflare Pages. Set STATIC_EXPORT=0 for a server build (`next start`).
+ * Two build modes:
+ *  - default: server build for `next start` (the VPS runs it under pm2 behind Cloudflare Tunnel)
+ *  - STATIC_EXPORT=1: static export to out/ (Cloudflare Pages or any static host)
+ * The default must stay the server build: `next start` re-reads this file and refuses to run with output: "export".
  */
-const staticExport = process.env.STATIC_EXPORT !== "0";
+const staticExport = process.env.STATIC_EXPORT === "1";
 
 const nextConfig: NextConfig = {
   ...(staticExport ? { output: "export" as const } : {}),

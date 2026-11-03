@@ -23,15 +23,19 @@ npm run dev
 
 ## Build i deploy
 
-Strona jest w pełni statyczna (dane z Discorda ładują się w przeglądarce), więc `npm run build` robi eksport do `out/`.
+Produkcja działa na VPS-ie: proces pm2 `SKYT` (`next start` na 127.0.0.1:3010) za Cloudflare Tunnel.
 
 ```bash
-npm run build          # statyczny eksport do out/
-npm start              # podgląd out/ na :3000
-npm run deploy         # Cloudflare Pages (projekt skyt-portfolio)
+npm run build          # build serwerowy pod next start
+npm start              # next start
+npm run build:static   # statyczny eksport do out/ (STATIC_EXPORT=1), np. Cloudflare Pages
 ```
 
-`SITE_URL` ustawia absolutne linki w metadanych (domyślnie `https://skyt.dev`). `STATIC_EXPORT=0` daje build serwerowy.
+Wdrożenie na VPS-ie (z `/root/portfolio`): `bash scripts/deploy-vps.sh`. Skrypt buduje `main` obok działającej strony,
+testuje go na porcie 3019, podmienia katalogi i restartuje tylko `SKYT`. Poprzednia wersja zostaje w `/root/portfolio-prev`,
+a `bash scripts/deploy-vps.sh rollback` wraca do niej.
+
+`SITE_URL` ustawia absolutne linki w metadanych (domyślnie `https://skyt.dev`).
 Obrazek podglądu linku (`/opengraph-image`) generuje się przy buildzie z fontów w `assets/fonts/`.
 
 ## Ruch

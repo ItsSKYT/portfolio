@@ -6,7 +6,7 @@ import { site } from "@/content/site";
 export const alt = `${site.name} | ${site.role}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-// Rendered once at build time (the site is a static export).
+// Rendered once at build time (also required by the static export).
 export const dynamic = "force-static";
 
 // Colours are the Night theme tokens from design/tokens.json.
