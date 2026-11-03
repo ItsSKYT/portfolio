@@ -63,6 +63,8 @@ body {
 .side__label { margin: 0; color: var(--ink-muted); text-transform: uppercase; }
 .side__label b { color: var(--signal); font-weight: inherit; }
 
+.contact__mail { margin-top: var(--space-12); padding-top: var(--space-6); border-top: 1px solid var(--line); }
+
 .site-foot {
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4);
   margin-top: var(--space-32); padding: var(--space-8); border-top: 1px solid var(--line);

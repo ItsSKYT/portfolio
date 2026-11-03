@@ -1,0 +1,175 @@
+/* Live Discord card and hero presence pill. Values come from tokens.css. */
+
+/* ---------- Status mark: shape + colour ---------- */
+.dc-mark {
+  --dc-cut: var(--surface-raised);
+  position: relative; display: inline-block; flex: none;
+  width: var(--size); height: var(--size); border-radius: 50%;
+  background: var(--ink-faint);
+}
+.dc-mark--online { background: var(--live); }
+.dc-mark--online::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit;
+  animation: sk-ping 1.8s var(--sk-ease) infinite;
+}
+.dc-mark--idle {
+  background: var(--sky);
+  -webkit-mask: radial-gradient(circle at 22% 22%, transparent 34%, #000 35%);
+  mask: radial-gradient(circle at 22% 22%, transparent 34%, #000 35%);
+}
+.dc-mark--dnd { background: var(--signal); }
+.dc-mark--dnd::before {
+  content: ""; position: absolute; left: 22%; right: 22%; top: 39%; bottom: 39%; border-radius: 2px; background: var(--dc-cut);
+}
+.dc-mark--offline, .dc-mark--unknown { background: transparent; box-shadow: inset 0 0 0 2px var(--ink-faint); }
+.dc-mark--ring { box-shadow: 0 0 0 3px var(--surface-raised); }
+.dc-mark--offline.dc-mark--ring { box-shadow: inset 0 0 0 2px var(--ink-faint), 0 0 0 3px var(--surface-raised); }
+.dc-mark--idle.dc-mark--ring { -webkit-mask: none; mask: none; background: radial-gradient(circle at 22% 22%, var(--surface-raised) 34%, var(--sky) 35%); }
+
+/* ---------- Card ---------- */
+.dc-card {
+  position: relative; overflow: hidden;
+  border: 1px solid var(--line); border-radius: var(--radius-lg);
+  background: var(--surface-raised); box-shadow: var(--lift); color: var(--ink);
+}
+.dc-top {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);
+  padding: 14px var(--space-6);
+  font: 500 11px/16px var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted);
+}
+.dc-top__status { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--ink); }
+
+.dc-banner { position: relative; height: 128px; overflow: hidden; background: var(--surface); border-block: 1px solid var(--line); }
+.dc-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dc-banner::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 40%, var(--surface-raised));
+}
+.dc-banner--dots {
+  background-image: radial-gradient(var(--line-strong) 1px, rgba(0, 0, 0, 0) 1.5px);
+  background-size: 16px 16px;
+}
+
+.dc-body { position: relative; padding: 0 var(--space-6) var(--space-6); }
+.dc-nameplate {
+  position: absolute; left: 0; right: 0; top: 40px; bottom: 0; width: 100%; height: calc(100% - 40px);
+  object-fit: cover; object-position: right; background-size: cover; background-position: right;
+  opacity: 0.22; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to left, #000, rgba(0, 0, 0, 0) 75%);
+  mask-image: linear-gradient(to left, #000, rgba(0, 0, 0, 0) 75%);
+}
+.dc-avatar-wrap { position: relative; width: 88px; height: 88px; margin-top: -44px; }
+.dc-avatar {
+  width: 88px; height: 88px; overflow: hidden; border-radius: 50%;
+  border: 5px solid var(--surface-raised); background: var(--surface);
+}
+.dc-body > .dc-avatar { margin-top: -44px; }
+.dc-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.dc-avatar--letter {
+  display: grid; place-items: center; background: var(--signal); color: var(--on-signal);
+  font: 700 32px/1 var(--font-display); letter-spacing: -0.04em;
+}
+.dc-decoration { position: absolute; left: -9px; top: -9px; width: 106px; height: 106px; max-width: none; pointer-events: none; }
+.dc-avatar__status { position: absolute; right: 4px; bottom: 4px; display: flex; }
+
+.dc-ident { position: relative; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-3) var(--space-6); margin-top: var(--space-4); }
+.dc-ident__names { min-width: 0; }
+.dc-name { margin: var(--space-4) 0 0; font: 650 28px/1 var(--font-display); letter-spacing: -0.03em; overflow-wrap: anywhere; }
+.dc-ident .dc-name { margin-top: 0; }
+.dc-handle { margin: var(--space-2) 0 0; font: 500 12px/16px var(--font-mono); color: var(--ink-faint); }
+.dc-badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.dc-badges img { display: block; width: 18px; height: 18px; }
+
+.dc-bio { position: relative; margin-top: var(--space-4); font: 400 15px/24px var(--font-body); color: var(--ink-muted); }
+.dc-bio p { margin: 0; }
+.dc-bio p + p { margin-top: var(--space-1); }
+.dc-bio strong { color: var(--ink); font-weight: 600; }
+.dc-bio code { padding: 0 4px; border: 1px solid var(--line); border-radius: 4px; font: 400 0.85em var(--font-mono); }
+
+.dc-row { display: grid; gap: var(--space-4); padding: 20px var(--space-6); border-top: 1px solid var(--line); }
+.dc-now { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2) var(--space-6); }
+.dc-label { margin: 0; font: 500 11px/16px var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.dc-devices { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin: 0; padding: 0; list-style: none; font: 500 11px/16px var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+.dc-devices li { display: inline-flex; align-items: center; gap: 6px; }
+.dc-custom { margin: 0; font: 400 17px/24px var(--font-body); color: var(--ink); }
+.dc-custom__emoji { margin-right: var(--space-2); }
+
+.dc-item { display: flex; align-items: flex-start; gap: var(--space-4); color: inherit; text-decoration: none; }
+.dc-item__text { min-width: 0; flex: 1; }
+.dc-item__title { margin: var(--space-1) 0 0; font: 600 17px/22px var(--font-body); letter-spacing: -0.015em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color var(--sk-dur-fast) ease; }
+.dc-art {
+  position: relative; flex: none; display: grid; place-items: center; width: 56px; height: 56px; overflow: hidden;
+  border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); color: var(--ink-faint);
+}
+.dc-art--lg { width: 64px; height: 64px; }
+.dc-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform var(--sk-dur-slow) var(--sk-ease); }
+.dc-muted { margin: 0; font: 400 14px/20px var(--font-body); color: var(--ink-muted); }
+.dc-faint { color: var(--ink-faint); }
+.dc-trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.dc-spotify { border-radius: var(--radius-md); }
+.dc-spotify__label { display: inline-flex; align-items: center; gap: 6px; }
+.dc-spotify__label svg { color: var(--live); }
+.dc-spotify:hover .dc-spotify__song { color: var(--signal); }
+.dc-spotify:hover .dc-art img { transform: scale(1.08); }
+.dc-spotify:focus-visible { outline: 2px solid var(--sky); outline-offset: 4px; }
+.dc-progress {
+  display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-3);
+  font: 500 10px/1 var(--font-mono); color: var(--ink-faint); font-variant-numeric: tabular-nums;
+}
+.dc-progress > span:first-child, .dc-progress > span:last-child { width: 32px; }
+.dc-progress > span:last-child { text-align: right; }
+.dc-progress__bar { position: relative; flex: 1; height: 2px; overflow: hidden; border-radius: 2px; background: var(--line); }
+.dc-progress__bar span { position: absolute; inset: 0; background: var(--signal); transform-origin: left; transition: transform 500ms linear; }
+
+.dc-profile {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);
+  padding: 18px var(--space-6); border-top: 1px solid var(--line);
+  color: var(--ink); text-decoration: none; font: 500 15px/20px var(--font-body);
+  transition: color var(--sk-dur) var(--sk-ease);
+}
+.dc-profile::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: var(--signal);
+  transform: scaleY(0); transform-origin: bottom; transition: transform var(--sk-dur) var(--sk-ease);
+}
+.dc-profile .sk-arrow { transition: transform var(--sk-dur) var(--sk-spring); }
+.dc-profile:hover, .dc-profile:focus-visible { color: var(--on-signal); }
+.dc-profile:hover::before, .dc-profile:focus-visible::before { transform: scaleY(1); }
+.dc-profile:hover .sk-arrow, .dc-profile:focus-visible .sk-arrow { transform: rotate(45deg); }
+.dc-profile:focus-visible { outline: 2px solid var(--sky); outline-offset: -2px; }
+
+.dc-shimmer {
+  background: linear-gradient(90deg, var(--surface) 0%, var(--line) 50%, var(--surface) 100%);
+  background-size: 200% 100%; animation: dc-shimmer 1.4s linear infinite;
+}
+.dc-body > .dc-avatar.dc-shimmer { border-color: var(--surface-raised); }
+.dc-line { height: 12px; border-radius: 4px; }
+@keyframes dc-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+.dc-enter { animation: dc-enter var(--sk-dur) var(--sk-ease) both; }
+@keyframes dc-enter { from { opacity: 0; transform: translateY(8px); } }
+
+/* ---------- Hero pill ---------- */
+.dc-pill {
+  display: inline-flex; align-items: center; gap: 10px; max-width: 100%;
+  padding: 8px 14px; border: 1px solid var(--line); border-radius: var(--radius-pill);
+  background: var(--surface); color: var(--ink-muted); text-decoration: none;
+  font: 500 12px/16px var(--font-mono); letter-spacing: 0.04em;
+  transition: border-color var(--sk-dur-fast) ease, color var(--sk-dur-fast) ease;
+}
+.dc-pill .dc-mark { --dc-cut: var(--surface); }
+.dc-pill:hover { border-color: var(--line-strong); color: var(--ink); }
+.dc-pill:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; }
+.dc-pill__status { color: var(--ink); white-space: nowrap; }
+.dc-pill__extra { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-left: 10px; border-left: 1px solid var(--line); }
+.dc-pill__extra svg { margin-right: 6px; vertical-align: -1px; color: var(--live); }
+
+@media (max-width: 720px) {
+  .dc-top, .dc-body, .dc-row, .dc-profile { padding-left: var(--space-4); padding-right: var(--space-4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-shimmer, .dc-mark--online::after, .dc-enter { animation: none; }
+  .dc-progress__bar span, .dc-art img, .dc-profile::before, .dc-profile .sk-arrow { transition: none; }
+}

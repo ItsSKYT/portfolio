@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { vars } from "@/lib/cx";
 import { DotField } from "./Ambient";
 import { Button } from "./Button";
@@ -13,14 +14,19 @@ export function Hero({
   lead,
   words,
   srLead,
+  tagline,
   actions = [],
+  aside,
 }: {
   name: string;
   role: string;
   lead: string;
   words: string[];
   srLead?: string;
+  tagline?: string;
   actions?: HeroAction[];
+  /** Live extras under the actions, e.g. the Discord presence pill. */
+  aside?: ReactNode;
 }) {
   return (
     <section className="sk-hero" aria-label={name}>
@@ -35,6 +41,11 @@ export function Hero({
         <Reveal as="p" className="sk-hero__lead body-l" delay={620}>
           {lead} <WordCycle words={words} srText={srLead} />
         </Reveal>
+        {tagline && (
+          <Reveal as="p" className="sk-hero__tagline body" delay={700}>
+            {tagline}
+          </Reveal>
+        )}
         {actions.length > 0 && (
           <Reveal className="sk-hero__actions" delay={780}>
             {actions.map((a, i) => (
@@ -51,6 +62,11 @@ export function Hero({
             ))}
           </Reveal>
         )}
+        {aside && (
+          <Reveal className="sk-hero__aside" variant="fade" delay={1000}>
+            {aside}
+          </Reveal>
+        )}
       </div>
       <span className="sk-hero__scroll" aria-hidden="true">
         <span />
@@ -59,7 +75,7 @@ export function Hero({
   );
 }
 
-export type Service = { title: string; tags: string[] };
+export type Service = { title: string; text?: string; tags: string[] };
 
 /** Numbered rows of what you do; a raised surface rises behind the hovered row. */
 export function ServiceList({ items }: { items: Service[] }) {
@@ -68,7 +84,10 @@ export function ServiceList({ items }: { items: Service[] }) {
       {items.map((s, i) => (
         <Reveal as="li" key={s.title} delay={i * 90} className="sk-service">
           <span className="sk-service__index">{String(i + 1).padStart(2, "0")}</span>
-          <h3 className="sk-service__title heading">{s.title}</h3>
+          <div className="sk-service__body">
+            <h3 className="sk-service__title heading">{s.title}</h3>
+            {s.text && <p className="sk-service__text">{s.text}</p>}
+          </div>
           <ul className="sk-service__tags" aria-label="Narzędzia">
             {s.tags.map((t, ti) => (
               <li key={t} style={vars({ "--i": ti })}>

@@ -1,11 +1,15 @@
+import { DiscordCard, PresencePill } from "@/components/discord/DiscordCard";
+import { DiscordProvider } from "@/components/discord/DiscordProvider";
 import {
   Button,
   ContactCTA,
+  CopyEmail,
+  Counter,
   CursorFollower,
+  EasterEgg,
   Hero,
   Marquee,
   NavBar,
-  NowCard,
   ProjectCard,
   Reveal,
   SectionHeader,
@@ -15,19 +19,26 @@ import {
   ThemeToggle,
   Timeline,
 } from "@/components/skyt";
-import { about, contact, experience, hero, marquee, nav, now, offline, projects, services, site, skills } from "@/content/site";
-
-// Cached so the static page can be prerendered; refreshed whenever the cache revalidates.
-async function CopyrightYear() {
-  "use cache";
-  return <>{new Date().getFullYear()}</>;
-}
+import {
+  about,
+  contact,
+  easterEgg,
+  experience,
+  hero,
+  marquee,
+  nav,
+  now,
+  personal,
+  projects,
+  sectionNumber,
+  services,
+  site,
+  skills,
+} from "@/content/site";
 
 export default function Home() {
-  const contactHref = site.email ? `mailto:${site.email}` : site.links.discord;
-
   return (
-    <>
+    <DiscordProvider userId={site.discordId}>
       <a className="skip-link" href="#main">
         Przejdź do treści
       </a>
@@ -49,10 +60,12 @@ export default function Home() {
           lead={hero.lead}
           words={hero.words}
           srLead={hero.srLead}
+          tagline={hero.tagline}
           actions={[
             { label: "Zobacz projekty", href: "#projekty" },
             { label: "Napisz do mnie", href: "#kontakt" },
           ]}
+          aside={<PresencePill href="#poza-kodem" />}
         />
 
         <div className="marquee-band">
@@ -60,26 +73,44 @@ export default function Home() {
         </div>
 
         <section className="section" id="o-mnie" aria-labelledby="h-o-mnie">
-          <div className="wrap about">
-            <SectionHeader index="01" eyebrow="O mnie" title="Od bazy danych po ostatni piksel." id="h-o-mnie" />
-            <Reveal className="about__text body-l" delay={200}>
-              {about.map((p) => (
-                <p key={p}>{p}</p>
+          <div className="wrap">
+            <div className="about">
+              <SectionHeader index={sectionNumber("o-mnie")} eyebrow="O mnie" title={about.title} id="h-o-mnie" />
+              <Reveal className="about__text body-l" delay={200}>
+                {about.paragraphs.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </Reveal>
+            </div>
+            <ul className="stats">
+              {about.stats.map((s, i) => (
+                <Reveal as="li" key={s.label} delay={i * 100}>
+                  <span className="stats__value">
+                    <Counter value={s.value} />
+                  </span>
+                  <span className="stats__label">{s.label}</span>
+                </Reveal>
               ))}
-            </Reveal>
+            </ul>
           </div>
         </section>
 
         <section className="section" id="co-robie" aria-labelledby="h-co-robie">
           <div className="wrap">
-            <SectionHeader index="02" eyebrow="Co robię" title="Cały stack, jedna osoba." id="h-co-robie" />
-            <ServiceList items={services} />
+            <SectionHeader
+              index={sectionNumber("co-robie")}
+              eyebrow="Co robię"
+              title={services.title}
+              kicker={services.kicker}
+              id="h-co-robie"
+            />
+            <ServiceList items={services.items} />
           </div>
         </section>
 
         <section className="section" id="projekty" aria-labelledby="h-projekty">
           <div className="wrap">
-            <SectionHeader index="03" eyebrow="Projekty" title="Rzeczy, które działają." id="h-projekty" />
+            <SectionHeader index={sectionNumber("projekty")} eyebrow="Projekty" title={projects.title} id="h-projekty" />
             <div className="projects">
               <Reveal className="projects__lead">
                 <ProjectCard {...projects.lead} external />
@@ -95,9 +126,9 @@ export default function Home() {
 
         <section className="section" id="umiejetnosci" aria-labelledby="h-umiejetnosci">
           <div className="wrap">
-            <SectionHeader index="04" eyebrow="Umiejętności" title="Narzędzia na co dzień." id="h-umiejetnosci" />
+            <SectionHeader index={sectionNumber("umiejetnosci")} eyebrow="Umiejętności" title={skills.title} id="h-umiejetnosci" />
             <div className="skills">
-              {skills.map((group, i) => (
+              {skills.groups.map((group, i) => (
                 <Reveal key={group.name} delay={i * 100} className="skills__group">
                   <h3 className="label skills__name">{group.name}</h3>
                   <ul className="skills__tags">
@@ -115,53 +146,97 @@ export default function Home() {
 
         <section className="section" id="doswiadczenie" aria-labelledby="h-doswiadczenie">
           <div className="wrap">
-            <SectionHeader index="05" eyebrow="Doświadczenie" title="Krok po kroku." id="h-doswiadczenie" />
-            <div className="split">
-              <Timeline items={experience} />
-              <div className="side">
-                <Reveal className="side__block" delay={200} id="obecnie">
-                  <h3 className="label side__label">
-                    <b>06</b> — Obecnie
-                  </h3>
-                  <NowCard title={now.title} detail={now.detail} />
-                  <p className="body">{now.text}</p>
+            <SectionHeader index={sectionNumber("doswiadczenie")} eyebrow="Doświadczenie" title={experience.title} id="h-doswiadczenie" />
+            <Timeline items={experience.items} />
+          </div>
+        </section>
+
+        <section className="section" id="obecnie" aria-labelledby="h-obecnie">
+          <div className="wrap">
+            <SectionHeader index={sectionNumber("obecnie")} eyebrow="Obecnie" title={now.title} kicker={now.kicker} id="h-obecnie" />
+            <ul className="now-list">
+              {now.items.map((item, i) => (
+                <Reveal as="li" key={item.label} delay={i * 110}>
+                  <div className="now-item">
+                    <p className="now-item__label">
+                      {i === 0 && (
+                        <span className="sk-status sk-status--live" aria-hidden="true">
+                          <span className="sk-status__dot" />
+                        </span>
+                      )}
+                      {item.label}
+                    </p>
+                    <h3 className="now-item__title title">{item.title}</h3>
+                    <p className="body">{item.text}</p>
+                  </div>
                 </Reveal>
-                <Reveal className="side__block" delay={320} id="poza-kodem">
-                  <h3 className="label side__label">
-                    <b>07</b> — Poza kodem
-                  </h3>
-                  <p className="body">{offline.text}</p>
-                  <NowCard label="Spotify" title="Czego słucham" detail="open.spotify.com" href={site.links.spotify} external />
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section className="section" id="poza-kodem" aria-labelledby="h-poza-kodem">
+          <div className="wrap">
+            <SectionHeader index={sectionNumber("poza-kodem")} eyebrow="Poza kodem" title={personal.title} id="h-poza-kodem" />
+            <div className="personal">
+              <div>
+                <Reveal as="p" className="personal__lead body-l">
+                  {personal.lead}
+                </Reveal>
+                <Reveal as="p" className="personal__text body" delay={120}>
+                  {personal.text}
+                </Reveal>
+                <ul className="interests">
+                  {personal.interests.map((item, i) => (
+                    <Reveal as="li" key={item} delay={180 + i * 80}>
+                      <span className="interests__n">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="interests__t">{item}</span>
+                    </Reveal>
+                  ))}
+                </ul>
+                <Reveal className="personal__links" delay={300}>
+                  <TextLink tone="signal" href={site.links.discord} target="_blank" rel="noopener noreferrer">
+                    Discord ↗
+                  </TextLink>
+                  <TextLink tone="signal" href={site.links.spotify} target="_blank" rel="noopener noreferrer">
+                    Spotify ↗
+                  </TextLink>
                 </Reveal>
               </div>
+              <Reveal delay={150}>
+                <DiscordCard fallbackName={site.name} profileUrl={site.links.discord} />
+              </Reveal>
             </div>
           </div>
         </section>
 
         <section className="section" id="kontakt" aria-label="Kontakt">
-          <div className="wrap">
+          <div className="wrap contact">
             <ContactCTA
-              lead={`08 — Kontakt · ${contact.lead}`}
-              title="Napisz"
-              href={contactHref}
-              external={!site.email}
+              lead={`${sectionNumber("kontakt")} / Kontakt · ${contact.lead}`}
+              title={contact.title}
+              href={`mailto:${site.email}`}
               links={[
                 { label: "GitHub", href: site.links.github, external: true },
                 { label: "Discord", href: site.links.discord, external: true },
                 { label: "Spotify", href: site.links.spotify, external: true },
               ]}
             />
+            <Reveal className="contact__mail" delay={300}>
+              <CopyEmail email={site.email} />
+            </Reveal>
           </div>
         </section>
       </main>
 
       <footer className="site-foot">
-        <span>
-          © <CopyrightYear /> {site.name}
+        <span className="site-foot__note">
+          © {site.footer.year} {site.name}
+          <EasterEgg copy={easterEgg} />
         </span>
-        <span>skyt.dev</span>
+        <span>{site.footer.note}</span>
         <TextLink href="#top">Do góry ↑</TextLink>
       </footer>
-    </>
+    </DiscordProvider>
   );
 }

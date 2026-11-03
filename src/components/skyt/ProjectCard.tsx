@@ -16,11 +16,14 @@ export function ProjectCard({
   role,
   description,
   stack = [],
+  facts = [],
   status,
   statusLabel,
   tilt = true,
   className,
 }: {
+  /** Short label/value pairs shown as a definition list (role, start date…). */
+  facts?: { label: string; value: string }[];
   title: string;
   href?: string;
   external?: boolean;
@@ -90,6 +93,16 @@ export function ProjectCard({
       </h3>
       {role && <p className="sk-card__role">{role}</p>}
       {description && <p className="sk-card__desc">{description}</p>}
+      {facts.length > 0 && (
+        <dl className="sk-card__facts">
+          {facts.map((f) => (
+            <div key={f.label}>
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       {stack.length > 0 && (
         <ul className="sk-card__stack" aria-label="Stack">
           {stack.map((s, i) => (

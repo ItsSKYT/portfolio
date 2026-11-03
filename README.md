@@ -1,26 +1,40 @@
 # skyt.dev
 
-SKYT's portfolio, built on the skyt.dev design system: Night/Day themes, motion tokens and animated React components.
+Portfolio SKYT na systemie projektowym skyt.dev: motywy Noc/Dzień, tokeny ruchu i animowane komponenty React (Next.js 16, App Router).
 
-## Run
+## Rozwój
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Where things live
+## Gdzie co jest
 
-| Path | What |
+| Ścieżka | Co |
 | --- | --- |
-| `src/content/site.ts` | All copy and links. Edit text here. Set `email` to route the big "Napisz" link to mail (empty = Discord). |
-| `design/tokens.json` | Design tokens (colours per theme, type, spacing, radii, shadows, durations, easings). |
-| `src/styles/tokens.css` | Generated from `tokens.json` by `npm run tokens`. Don't edit by hand. |
-| `src/styles/skyt.css` | Component styles; every value comes from a token. |
-| `src/components/skyt/` | The components: Hero, NavBar, ProjectCard, Timeline, ContactCTA, DotField, CursorFollower, ThemeToggle… |
-| `src/app/` | Layout (fonts via `next/font`, metadata, theme bootstrap) and the page. |
+| `src/content/site.ts` | Cała treść i linki (sekcje, statystyki, projekty, mail, ID Discorda, serduszko). |
+| `design/tokens.json` | Tokeny (kolory per motyw, typografia, odstępy, promienie, cienie, czasy, krzywe). |
+| `src/styles/tokens.css` | Generowany z `tokens.json`: `npm run tokens`. Nie edytuj ręcznie. |
+| `src/styles/*.css` | Style komponentów (`skyt.css`), karty Discord (`discord.css`), efektów (`fx.css`). |
+| `src/components/skyt/` | Komponenty: Hero, NavBar, ProjectCard, Timeline, ContactCTA, DotField, kursor, intro, Lenis, liczniki, serduszko… |
+| `src/components/discord/` | Status Discord na żywo (Lanyard: websocket + REST) i profil (dcdn.dstn.to). |
+| `src/app/` | Layout (fonty `next/font`, metadane, motyw i intro przed pierwszym renderem), strona, 404, obrazek OG. |
 
-## Motion
+## Build i deploy
 
-Entrances run once when a block scrolls into view; hover responses are instant. Everything honours
-`prefers-reduced-motion` (short fades only, no tilt, no loops). Content stays visible without JavaScript.
+Strona jest w pełni statyczna (dane z Discorda ładują się w przeglądarce), więc `npm run build` robi eksport do `out/`.
+
+```bash
+npm run build          # statyczny eksport do out/
+npm start              # podgląd out/ na :3000
+npm run deploy         # Cloudflare Pages (projekt skyt-portfolio)
+```
+
+`SITE_URL` ustawia absolutne linki w metadanych (domyślnie `https://skyt.dev`). `STATIC_EXPORT=0` daje build serwerowy.
+Obrazek podglądu linku (`/opengraph-image`) generuje się przy buildzie z fontów w `assets/fonts/`.
+
+## Ruch
+
+Wejścia odpalają się raz, gdy blok wjeżdża w widok; reakcje na hover są natychmiastowe. Intro gra raz na sesję karty.
+Wszystko respektuje `prefers-reduced-motion`, a treść jest widoczna także bez JavaScriptu.

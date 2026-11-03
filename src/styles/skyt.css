@@ -149,10 +149,10 @@
 /* ---------- Reveal ---------- */
 .sk-reveal {
   transition:
-    opacity var(--sk-dur-slow) var(--sk-ease) var(--sk-delay, 0ms),
-    transform var(--sk-dur-slow) var(--sk-ease) var(--sk-delay, 0ms),
-    filter var(--sk-dur-slow) var(--sk-ease) var(--sk-delay, 0ms),
-    clip-path var(--sk-dur-epic) var(--sk-ease) var(--sk-delay, 0ms);
+    opacity var(--sk-dur-slow) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--sk-intro, 0ms)),
+    transform var(--sk-dur-slow) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--sk-intro, 0ms)),
+    filter var(--sk-dur-slow) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--sk-intro, 0ms)),
+    clip-path var(--sk-dur-epic) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--sk-intro, 0ms));
 }
 .sk-reveal--up { opacity: 0; transform: translate3d(0, 28px, 0); }
 .sk-reveal--blur { opacity: 0; filter: blur(12px); transform: scale(0.98); }
@@ -169,8 +169,8 @@
 .sk-split__unit {
   display: inline-block; opacity: 0; transform: translate3d(0, 112%, 0) rotate(6deg); transform-origin: 0 100%;
   transition:
-    transform var(--sk-dur-epic) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--i) * var(--sk-stagger, 32ms)),
-    opacity var(--sk-dur-slow) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--i) * var(--sk-stagger, 32ms));
+    transform var(--sk-dur-epic) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--sk-intro, 0ms) + var(--i) * var(--sk-stagger, 32ms)),
+    opacity var(--sk-dur-slow) var(--sk-ease) calc(var(--sk-delay, 0ms) + var(--sk-intro, 0ms) + var(--i) * var(--sk-stagger, 32ms));
 }
 .sk-split.is-in .sk-split__unit { opacity: 1; transform: none; }
 
@@ -361,8 +361,8 @@
 /* ---------- Hero ---------- */
 .sk-hero {
   position: relative; isolation: isolate; overflow: hidden;
-  display: flex; align-items: flex-end; min-height: 680px;
-  padding: var(--space-24) var(--space-8) var(--space-16);
+  display: flex; align-items: flex-end; min-height: 800px;
+  padding: var(--space-32) var(--space-8) var(--space-16);
 }
 .sk-hero::before {
   content: ""; position: absolute; z-index: -2; left: -10%; bottom: -30%; width: 70%; height: 80%; pointer-events: none;

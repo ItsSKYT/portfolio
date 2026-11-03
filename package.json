@@ -6,10 +6,13 @@
     "tokens": "node scripts/build-tokens.mjs",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "npx --yes serve@14 out -l 3000",
+    "preview:pages": "next build && npx --yes wrangler pages dev out --port 8788",
+    "deploy": "next build && npx --yes wrangler pages deploy out --project-name skyt-portfolio --branch main",
     "lint": "eslint"
   },
   "dependencies": {
+    "lenis": "^1.3.26",
     "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0"
