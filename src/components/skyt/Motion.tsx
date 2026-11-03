@@ -8,7 +8,7 @@ type RevealProps = HTMLAttributes<HTMLElement> & {
   as?: ElementType;
   /** up = rise + fade · blur = de-blur · fade = opacity · clip = wipe down. */
   variant?: "up" | "blur" | "fade" | "clip";
-  /** ms before it starts; stagger siblings 80–120ms apart. */
+  /** ms before it starts; stagger siblings 80-120ms apart. */
   delay?: number;
   once?: boolean;
   children?: ReactNode;

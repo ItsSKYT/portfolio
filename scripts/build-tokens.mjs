@@ -10,7 +10,7 @@ const FONT_VARS = { display: "--nf-display", body: "--nf-body", mono: "--nf-mono
 const themes = t.color.themes.map((th) => th.id);
 const valueFor = (tok, theme, i) => (typeof tok.value === "string" ? (i === 0 ? tok.value : null) : tok.value[theme]);
 
-let css = "/* skyt.dev — generated from tokens.json */\n\n";
+let css = "/* skyt.dev: generated from tokens.json */\n\n";
 
 themes.forEach((theme, i) => {
   const sel = i === 0 ? `:root,\n[data-theme="${theme}"]` : `[data-theme="${theme}"]`;

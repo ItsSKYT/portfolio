@@ -116,7 +116,7 @@ export const visibleActivities = (activities: LanyardActivity[], listeningToSpot
   activities.filter((a) => a.type !== 4 && !(listeningToSpotify && a.type === 2 && a.name === "Spotify"));
 
 /** The site avoids long dashes; live data gets a plain hyphen instead. */
-export const noLongDash = (text: string) => text.replace(/\s*[—–]\s*/g, " - ");
+export const noLongDash = (text: string) => text.replace(/\s*[\u2014\u2013]\s*/g, " - ");
 
 export function formatTime(ms: number) {
   const t = Math.max(0, Math.floor(ms / 1000));
