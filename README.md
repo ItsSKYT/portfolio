@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# skyt.dev
 
-## Getting Started
+SKYT's portfolio, built on the skyt.dev design system: Night/Day themes, motion tokens and animated React components.
 
-First, run the development server:
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Path | What |
+| --- | --- |
+| `src/content/site.ts` | All copy and links. Edit text here. Set `email` to route the big "Napisz" link to mail (empty = Discord). |
+| `design/tokens.json` | Design tokens (colours per theme, type, spacing, radii, shadows, durations, easings). |
+| `src/styles/tokens.css` | Generated from `tokens.json` by `npm run tokens`. Don't edit by hand. |
+| `src/styles/skyt.css` | Component styles; every value comes from a token. |
+| `src/components/skyt/` | The components: Hero, NavBar, ProjectCard, Timeline, ContactCTA, DotField, CursorFollower, ThemeToggle… |
+| `src/app/` | Layout (fonts via `next/font`, metadata, theme bootstrap) and the page. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Motion
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Entrances run once when a block scrolls into view; hover responses are instant. Everything honours
+`prefers-reduced-motion` (short fades only, no tilt, no loops). Content stays visible without JavaScript.
