@@ -163,7 +163,10 @@
 .sk-reveal--blur { opacity: 0; filter: blur(12px); transform: scale(0.98); }
 .sk-reveal--fade { opacity: 0; }
 .sk-reveal--clip { clip-path: inset(0 0 100% 0); }
-.sk-reveal.is-in { opacity: 1; transform: none; filter: none; clip-path: inset(0 0 0 0); }
+/* Revealed content must never be clipped: hover lifts, tilts, glows and shadows reach past the wrapper. */
+.sk-reveal.is-in { opacity: 1; transform: none; filter: none; }
+/* The clip wipe ends well outside the box (not at inset(0)), so nothing that grows on hover gets cut. */
+.sk-reveal--clip.is-in { clip-path: inset(-48px -48px -48px -48px); }
 
 /* ---------- SplitText ---------- */
 .sk-split__word { display: inline-block; white-space: nowrap; }

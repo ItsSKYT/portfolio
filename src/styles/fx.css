@@ -126,7 +126,8 @@ html.is-intro .sk-intro {
 .egg-modal__q { margin: var(--space-8) 0 0; font: 650 40px/1.05 var(--font-display); letter-spacing: -0.035em; }
 .egg-modal__actions { display: flex; gap: var(--space-4); margin-top: var(--space-8); }
 @keyframes egg-fade { from { opacity: 0; } }
-@keyframes egg-modal { from { opacity: 0; transform: translateY(24px); clip-path: inset(0 0 100% 0 round var(--radius-lg)); } to { clip-path: inset(0 0 0 0 round var(--radius-lg)); } }
+/* Ends outside the box so the buttons' hover glow is not cut off. */
+@keyframes egg-modal { from { opacity: 0; transform: translateY(24px); clip-path: inset(0 0 100% 0); } to { clip-path: inset(-48px -48px -48px -48px); } }
 
 .egg-love {
   position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; overflow: hidden; cursor: pointer;
